@@ -12,7 +12,8 @@ export default new Vuex.Store({
     contrasenia:'',
     error:'',
     tareas : [],
-    tarea: {nombre:'',id:''}
+    tarea: {nombre:'',id:''},
+    carga:false
   },
   mutations: {
     setUsuario(state,payload){
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     },
     eliminarTarea(state,id){
       state.tareas = state.tareas.filter((doc)=>{ return doc.id !== id})
+    },
+    cargarFirebase(state,payload){
+      state.carga = payload
     }
   },
   actions: {
@@ -79,7 +83,8 @@ export default new Vuex.Store({
     },
     getTareas({commit}){
       var user = firebase.auth().currentUser;
-      let tareas = []
+      let tareas = [];
+      commit('cargarFirebase',true)
       db.collection(user.email).get()
       .then( (snapshot) => {
           snapshot.forEach( e => {
@@ -87,6 +92,7 @@ export default new Vuex.Store({
             data.id = e.id;
             tareas.push(data)
           })
+          commit('cargarFirebase',false)
       })
       commit('setTareas',tareas) // setea la mutacion
     },
@@ -111,10 +117,12 @@ export default new Vuex.Store({
     },
     agregarTarea({commit},nombre){
       var user = firebase.auth().currentUser;
+      commit('cargarFirebase',true)
       db.collection(user.email).add({
         nombre: nombre
       }).then(doc => {
         console.log(doc)
+        commit('cargarFirebase',false)
         router.push({name:'inicio'})
       })
     },

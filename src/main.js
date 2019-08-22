@@ -1,17 +1,19 @@
 import Vue from 'vue'
 import App from './App.vue'
+import Vuelidate from 'vuelidate'
 import router from './router'
 import store from './store'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
 
 var firebase = require("firebase/app")
 require('firebase/firestore')
-
 require("firebase/auth")
+
 var firebaseConfig = {
   apiKey: "AIzaSyBGbjaFK4QqarG_fEyF3juC2kqzfaWkN1Q",
   authDomain: "vue-tareas-cb6f2.firebaseapp.com",
