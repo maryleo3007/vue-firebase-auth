@@ -23,9 +23,6 @@
         <div class="alert alert-danger" role="alert">
         {{error}}
         </div>
-        {{$v.email}}
-        <div>-</div>
-        {{$v.password}}
     </div> 
 </template>
 <script>

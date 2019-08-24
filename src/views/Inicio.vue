@@ -11,8 +11,13 @@
                 :key="variant"
             ></b-spinner>
         </div>
+        <form class="m-5" v-on:keyup="buscarTarea(texto)">
+            <div class="form-group">
+                <input v-model="texto" type="text" class="form-control" id="formGroupExampleInput" placeholder="Buscar...">
+            </div>
+        </form>
         <ul class="list-group m-5" v-if="!carga">
-            <li class="list-group-item" v-for="tarea of tareas" :key="tarea.id">
+            <li class="list-group-item" v-for="tarea of arrayFiltrado" :key="tarea.id">
                 {{tarea}}
                 <router-link :to="{name:'editar',params:{id:tarea.id}}">
                     <button  class="btn btn-info">Editar</button>
@@ -23,22 +28,24 @@
     </div>
 </template>
 <script>
-import { mapState,  mapActions } from 'vuex';
+import { mapState,  mapActions, mapGetters } from 'vuex';
 export default {
     name: 'Inicio',
     data() {
       return {
-        variants: ['info']
+        variants: ['info'],
+        texto:''
       }
     },
     methods:{
-        ...mapActions(['getTareas','eliminarTarea'])
+        ...mapActions(['getTareas','eliminarTarea', 'buscarTarea'])
     },
     created(){
         this.getTareas()
     },
     computed: {
-        ...mapState(['usuario','tareas','carga'])
+        ...mapState(['usuario','tareas','carga']),
+        ...mapGetters(['arrayFiltrado'])
     }
 }
 </script>

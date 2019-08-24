@@ -13,7 +13,8 @@ export default new Vuex.Store({
     error:'',
     tareas : [],
     tarea: {nombre:'',id:''},
-    carga:false
+    carga:false,
+    buscarTarea:''
   },
   mutations: {
     setUsuario(state,payload){
@@ -34,6 +35,9 @@ export default new Vuex.Store({
     },
     cargarFirebase(state,payload){
       state.carga = payload
+    },
+    buscarTarea(state,payload){
+      state.buscarTarea = payload
     }
   },
   actions: {
@@ -133,6 +137,9 @@ export default new Vuex.Store({
         console.log('eliminado')
         commit('eliminarTarea',id)
       })
+    },
+    buscarTarea({commit, state},payload){
+      state.buscarTarea = payload.toLowerCase()
     }
   },
   getters:{
@@ -142,6 +149,16 @@ export default new Vuex.Store({
       } else {
         return true
       }
+    },
+    arrayFiltrado(state){
+      let arrayFiltrado = [];
+      for(let tarea of state.tareas){
+        let nombre = tarea.nombre.toLowerCase()
+        if(nombre.indexOf(state.buscarTarea)>= 0){
+          arrayFiltrado.push(tarea)
+        }
+      }
+      return arrayFiltrado
     }
   }
 })
